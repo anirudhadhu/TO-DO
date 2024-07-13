@@ -1,9 +1,9 @@
 import { controller, IAppController } from '@foal/core';
+import { TodoController } from './controllers/todo.controller';
 
-import { ApiController } from './controllers';
 
 export class AppController implements IAppController {
   subControllers = [
-    controller('/api', ApiController),
+    controller('/todos', TodoController),
   ];
 }

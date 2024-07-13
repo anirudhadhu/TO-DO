@@ -1,24 +1,22 @@
-
-import { Config } from '@foal/core';
 import { DataSource } from 'typeorm';
+import { Todo } from './app/entities';
 
-export function createDataSource(): DataSource {
-  return new DataSource({
-    type: Config.getOrThrow('database.type', 'string') as any,
+export const AppDataSource = new DataSource({
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'dhungana',
+  database: 'todo',
+  entities: [Todo],
+  synchronize: true,
+  logging: false,
+});
 
-    url: Config.get('database.url', 'string'),
-    host: Config.get('database.host', 'string'),
-    port: Config.get('database.port', 'number'),
-    username: Config.get('database.username', 'string'),
-    password: Config.get('database.password', 'string'),
-    database: Config.get('database.database', 'string'),
-
-    dropSchema: Config.get('database.dropSchema', 'boolean', false),
-    synchronize: Config.get('database.synchronize', 'boolean', false),
-
-    entities: ['build/app/**/*.entity.js'],
-    migrations: ['build/migrations/*.js'],
+AppDataSource.initialize()
+  .then(() => {
+    console.log('Data Source has been initialized!');
+  })
+  .catch((err) => {
+    console.error('Error during Data Source initialization:', err);
   });
-}
-
-export const dataSource = createDataSource();

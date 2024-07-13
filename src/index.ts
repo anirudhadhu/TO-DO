@@ -1,20 +1,20 @@
-import 'source-map-support/register';
-
-// 3p
+import 'reflect-metadata';
 import { Config, createApp, displayServerURL } from '@foal/core';
-
-// App
 import { AppController } from './app/app.controller';
-import { dataSource } from './db';
+import { AppDataSource } from './db';
 
 async function main() {
-  await dataSource.initialize();
+  await AppDataSource.initialize();
 
-  const app = await createApp(AppController);
+  const app = createApp(AppController);
 
-  const port = Config.get('port', 'number', 3001);
-  app.listen(port, () => displayServerURL(port));
+  const port = Config.get('port', 'number', 3000);
+
+  const server = (await app).listen(port, () => {
+    displayServerURL(port);
+  });
+
+  return server;
 }
 
-main()
-  .catch(err => { console.error(err.stack); process.exit(1); });
+main().catch(err => console.error(err));
