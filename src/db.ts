@@ -10,7 +10,6 @@ export const AppDataSource = new DataSource({
   database: 'todo',
   entities: [Todo],
   synchronize: true,
-  logging: false,
 });
 
 AppDataSource.initialize()
