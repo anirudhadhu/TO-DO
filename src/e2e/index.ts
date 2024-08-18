@@ -8,7 +8,6 @@ import { AppController } from '../app/app.controller';
 import { createDataSource } from '../db';
 
 describe('The server', () => {
-
   let app;
   let dataSource: DataSource;
 
@@ -29,5 +28,4 @@ describe('The server', () => {
       .get('/')
       .expect(200);
   });
-
 });

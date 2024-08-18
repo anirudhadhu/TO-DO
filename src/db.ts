@@ -1,16 +1,20 @@
 import { DataSource } from 'typeorm';
-import { Todo } from './app/entities';
+import { Todo } from './app/entities/todo.entity';
 
-export const AppDataSource = new DataSource({
-  type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: 'dhungana',
-  database: 'todo',
-  entities: [Todo],
-  synchronize: true,
-});
+export const createDataSource = () => {
+  return new DataSource({
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: 'dhungana',
+    database: 'todo',
+    entities: [Todo],
+    synchronize: true,
+  });
+};
+
+const AppDataSource = createDataSource();
 
 AppDataSource.initialize()
   .then(() => {
@@ -19,3 +23,5 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error('Error during Data Source initialization:', err);
   });
+
+export { AppDataSource };
