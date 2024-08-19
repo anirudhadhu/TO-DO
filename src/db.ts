@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { Todo } from './app/entities/todo.entity';
+import { User } from './app/entities/user.entity';
 
 export const createDataSource = () => {
   return new DataSource({
@@ -9,7 +10,7 @@ export const createDataSource = () => {
     username: 'root',
     password: 'dhungana',
     database: 'todo',
-    entities: [Todo],
+    entities: [Todo, User] ,
     synchronize: true,
   });
 };

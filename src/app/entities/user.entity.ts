@@ -18,7 +18,7 @@ import {
 } from "typeorm";
 
 @Entity()
-export class User {
+export class User  {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -31,7 +31,6 @@ export class User {
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
-    // Hash the password before storing it in the database
     this.password = await hashPassword(this.password);
   }
 }

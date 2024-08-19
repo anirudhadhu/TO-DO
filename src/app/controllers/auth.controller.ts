@@ -10,7 +10,7 @@ import {
 import { getSecretOrPrivateKey } from "@foal/jwt";
 import { sign } from "jsonwebtoken";
 import { promisify } from "util";
-
+import { getRepository } from "typeorm"; // Importing getRepository from TypeORM
 import { User } from "../entities";
 
 const credentialsSchema = {
@@ -27,10 +27,13 @@ export class AuthController {
   @Post("/signup")
   @ValidateBody(credentialsSchema)
   async signup(ctx: Context) {
+    const userRepository = getRepository(User);
+
     const user = new User();
     user.email = ctx.request.body.email;
     user.password = await hashPassword(ctx.request.body.password);
-    await user.save();
+
+    await userRepository.save(user);
 
     return new HttpResponseOK({
       token: await this.createJWT(user),
@@ -40,7 +43,11 @@ export class AuthController {
   @Post("/login")
   @ValidateBody(credentialsSchema)
   async login(ctx: Context) {
-    const user = await User.findOneBy({ email: ctx.request.body.email });
+    const userRepository = getRepository(User);
+
+    const user = await userRepository.findOneBy({
+      email: ctx.request.body.email,
+    });
 
     if (!user) {
       return new HttpResponseUnauthorized();
